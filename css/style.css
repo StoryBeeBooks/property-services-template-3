@@ -41,6 +41,8 @@
 
 html {
     scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 body {
@@ -53,12 +55,16 @@ body {
     -moz-osx-font-smoothing: grayscale;
     font-size: 16px;
     letter-spacing: 0;
+    /* Prevent pull-to-refresh on mobile */
+    overscroll-behavior-y: contain;
 }
 
 a {
     text-decoration: none;
     color: inherit;
     transition: var(--transition-fast);
+    /* Improve touch responsiveness */
+    -webkit-tap-highlight-color: rgba(13, 59, 102, 0.1);
 }
 
 ul {
@@ -69,6 +75,28 @@ img {
     max-width: 100%;
     height: auto;
     display: block;
+}
+
+button {
+    /* Improve touch responsiveness */
+    -webkit-tap-highlight-color: rgba(13, 59, 102, 0.1);
+    cursor: pointer;
+}
+
+input,
+textarea,
+select {
+    /* Improve touch responsiveness */
+    -webkit-tap-highlight-color: rgba(13, 59, 102, 0.1);
+    /* Prevent zoom on focus in iOS */
+    font-size: 16px;
+}
+
+/* Prevent horizontal scroll */
+body,
+html {
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 /* Container */
@@ -2053,7 +2081,28 @@ footer {
 /* ============================================
    RESPONSIVE DESIGN
    ============================================ */
+
+/* Improved touch targets for mobile */
+@media (hover: none) and (pointer: coarse) {
+    .btn-primary,
+    .btn-secondary,
+    .cta-button,
+    .btn-nav,
+    .nav-links a {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    .hamburger {
+        padding: 8px;
+    }
+}
+
 @media (max-width: 1200px) {
+    .container {
+        padding: 0 1.5rem;
+    }
+    
     .services-grid,
     .testimonials-grid,
     .packages-grid,
@@ -2069,9 +2118,21 @@ footer {
     .footer-content {
         grid-template-columns: repeat(2, 1fr);
     }
+    
+    .hero-inner {
+        column-gap: 3rem;
+    }
 }
 
 @media (max-width: 992px) {
+    .container {
+        padding: 0 1.25rem;
+    }
+    
+    .navbar {
+        padding: 1rem 1.5rem;
+    }
+    
     .service-detail-row {
         grid-template-columns: 1fr;
         gap: 3rem;
@@ -2095,6 +2156,7 @@ footer {
     
     .policy-nav {
         position: static;
+        margin-bottom: 2rem;
     }
     
     .team-grid {
@@ -2109,20 +2171,60 @@ footer {
     .steps-grid::before {
         display: none;
     }
+    
+    .hero-card-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .cta-content h2 {
+        font-size: 2.5rem;
+    }
 }
 
 @media (max-width: 768px) {
+    body {
+        font-size: 15px;
+    }
+    
+    .container {
+        padding: 0 1rem;
+    }
+    
+    .navbar {
+        padding: 0.9rem 1.25rem;
+    }
+    
+    .logo-text {
+        font-size: 1.2rem;
+    }
+    
+    .logo-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 1.1rem;
+    }
+
     .hero {
-        padding: 6.5rem 1.5rem 3.5rem;
+        padding: 6rem 1.25rem 3rem;
+        min-height: auto;
     }
 
     .hero-inner {
         grid-template-columns: 1fr;
-        gap: 2.5rem;
+        gap: 2rem;
     }
 
     .hero-right {
         order: -1;
+    }
+    
+    .hero-left {
+        padding-right: 0;
+    }
+    
+    #canvas-container {
+        min-height: 280px;
     }
 
     .nav-links {
@@ -2132,7 +2234,7 @@ footer {
         height: 100vh;
         width: 85%;
         max-width: 380px;
-        background: var(--primary-dark);
+        background: rgba(13, 59, 102, 0.98);
         backdrop-filter: blur(24px) saturate(180%);
         flex-direction: column;
         align-items: flex-start;
@@ -2140,8 +2242,9 @@ footer {
         gap: 0;
         transform: translateX(100%);
         transition: var(--transition);
-        border-left: 1px solid var(--border-glow);
+        border-left: 1px solid var(--border-subtle);
         box-shadow: -8px 0 32px rgba(0, 0, 0, 0.5);
+        z-index: 999;
     }
     
     .nav-links.active {
@@ -2151,8 +2254,13 @@ footer {
     .nav-links a {
         width: 100%;
         padding: 1.125rem 0;
-        border-bottom: 1px solid var(--border-glow);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         font-size: 1.0625rem;
+        color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .nav-links a:hover {
+        color: #fff;
     }
     
     .nav-links a::after {
@@ -2163,10 +2271,18 @@ footer {
         margin-top: 1.5rem;
         text-align: center;
         padding: 1rem 3rem !important;
+        width: 100%;
+    }
+    
+    .lang-switch {
+        width: 100%;
+        text-align: center;
+        margin-top: 1rem;
     }
     
     .hamburger {
         display: flex;
+        z-index: 1001;
     }
     
     .hamburger.toggle span:nth-child(1) {
@@ -2182,19 +2298,48 @@ footer {
     }
     
     .hero h1 {
-        font-size: 2.75rem;
+        font-size: 2.5rem;
         letter-spacing: -0.02em;
+        margin-top: 0.8rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+        max-width: 100%;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+    }
+    
+    .hero-buttons .btn-primary,
+    .hero-buttons .btn-secondary {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
     }
     
     .hero-stats {
-        flex-direction: column;
-        gap: 2rem;
-        margin-top: 4rem;
-        padding-top: 2.5rem;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 1.5rem;
+        margin-top: 2.5rem;
+        padding-top: 2rem;
+    }
+    
+    .stat-item {
+        text-align: center;
+        flex: 1;
     }
     
     .stat-item h3 {
-        font-size: 2.5rem;
+        font-size: 2rem;
+    }
+    
+    .stat-item p {
+        font-size: 0.8rem;
     }
     
     .services-grid,
@@ -2203,17 +2348,18 @@ footer {
     .portfolio-grid,
     .team-grid {
         grid-template-columns: 1fr;
-        gap: 2rem;
+        gap: 1.5rem;
     }
     
     .features-grid,
     .values-grid {
         grid-template-columns: 1fr;
+        gap: 1.5rem;
     }
     
     .footer-content {
         grid-template-columns: 1fr;
-        gap: 3rem;
+        gap: 2.5rem;
     }
     
     .form-row {
@@ -2229,19 +2375,83 @@ footer {
     }
     
     section {
-        padding: 6rem 5%;
+        padding: 4rem 5%;
+    }
+    
+    .section-title h2 {
+        font-size: 2.25rem;
+    }
+    
+    .section-title p {
+        font-size: 0.95rem;
+    }
+    
+    .service-card,
+    .feature-card,
+    .testimonial-card,
+    .team-member-card {
+        padding: 2rem 1.75rem;
+    }
+    
+    .cta-section {
+        padding: 4rem 5%;
+    }
+    
+    .cta-content h2 {
+        font-size: 2rem;
+    }
+    
+    .cta-content p {
+        font-size: 1rem;
+    }
+    
+    .scroll-indicator {
+        display: none;
     }
 }
 
 @media (max-width: 480px) {
-    .hero h1 {
-        font-size: 2.25rem;
-        letter-spacing: -0.02em;
+    body {
+        font-size: 14px;
     }
     
-    .hero p {
-        font-size: 1.0625rem;
-        line-height: 1.75;
+    .container {
+        padding: 0 0.875rem;
+    }
+    
+    .navbar {
+        padding: 0.85rem 1rem;
+    }
+    
+    .logo-text {
+        font-size: 1.1rem;
+    }
+    
+    .logo-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+    }
+    
+    .hero {
+        padding: 5.5rem 1rem 2.5rem;
+    }
+    
+    .hero h1 {
+        font-size: 2rem;
+        letter-spacing: -0.02em;
+        line-height: 1.15;
+    }
+    
+    .hero p,
+    .hero-subtitle {
+        font-size: 0.95rem;
+        line-height: 1.65;
+    }
+    
+    .hero-badge {
+        font-size: 0.75rem;
+        padding: 0.35rem 0.8rem;
     }
     
     .btn-primary,
@@ -2249,25 +2459,241 @@ footer {
     .cta-button {
         width: 100%;
         justify-content: center;
-        padding: 1.125rem 1.5rem;
+        padding: 1rem 1.5rem;
+        font-size: 0.95rem;
+    }
+    
+    .hero-buttons {
+        gap: 0.625rem;
+    }
+    
+    .hero-stats {
+        flex-direction: column;
+        gap: 1.5rem;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+    }
+    
+    .stat-item {
+        text-align: center;
+    }
+    
+    .stat-item h3 {
+        font-size: 1.75rem;
+    }
+    
+    .stat-item p {
+        font-size: 0.8rem;
     }
     
     .section-title h2 {
-        font-size: 2rem;
+        font-size: 1.85rem;
         letter-spacing: -0.02em;
+        line-height: 1.2;
     }
     
     .section-title p {
-        font-size: 1rem;
+        font-size: 0.9rem;
+        line-height: 1.7;
+    }
+    
+    .section-label {
+        font-size: 0.75rem;
+        letter-spacing: 2px;
+    }
+    
+    .service-card,
+    .feature-card,
+    .testimonial-card,
+    .team-member-card {
+        padding: 1.75rem 1.5rem;
+    }
+    
+    .service-card h3,
+    .feature-card h3,
+    .team-member-card h3 {
+        font-size: 1.15rem;
+    }
+    
+    .service-card p,
+    .feature-card p,
+    .testimonial-card .quote {
+        font-size: 0.9rem;
     }
     
     .contact-info,
     .contact-form-wrapper {
-        padding: 2.5rem;
+        padding: 2rem 1.5rem;
     }
     
     .safety-section {
-        padding: 2.5rem;
+        padding: 2rem 1.5rem;
+    }
+    
+    .cta-content h2 {
+        font-size: 1.75rem;
+        line-height: 1.25;
+    }
+    
+    .cta-content p {
+        font-size: 0.95rem;
+        margin-bottom: 2rem;
+    }
+    
+    section {
+        padding: 3rem 5%;
+    }
+    
+    .services-grid,
+    .testimonials-grid,
+    .packages-grid,
+    .portfolio-grid,
+    .team-grid,
+    .features-grid,
+    .values-grid {
+        gap: 1.25rem;
+    }
+    
+    .hero-card-grid {
+        gap: 0.75rem;
+    }
+    
+    .hero-service-card {
+        padding: 0.875rem 1rem;
+    }
+    
+    .hero-service-label {
+        font-size: 0.85rem;
+    }
+    
+    .hero-service-card p {
+        font-size: 0.8rem;
+    }
+    
+    #canvas-container {
+        min-height: 240px;
+    }
+    
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        font-size: 1rem;
+        padding: 0.875rem 1.125rem;
+    }
+    
+    .footer-content {
+        gap: 2rem;
+    }
+    
+    .footer-section h3 {
+        font-size: 1.1rem;
+    }
+    
+    .footer-section p,
+    .footer-section a {
+        font-size: 0.9rem;
+    }
+    
+    .nav-links {
+        width: 90%;
+        padding: 100px 2rem 2rem;
+    }
+    
+    .nav-links a {
+        font-size: 1rem;
+        padding: 1rem 0;
+    }
+    
+    /* Improve tap targets on mobile */
+    button,
+    a,
+    input,
+    select,
+    textarea {
+        -webkit-tap-highlight-color: rgba(13, 59, 102, 0.1);
+    }
+    
+    /* Prevent text size adjustment */
+    html {
+        -webkit-text-size-adjust: 100%;
+        -moz-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 360px) {
+    .hero h1 {
+        font-size: 1.75rem;
+    }
+    
+    .section-title h2 {
+        font-size: 1.65rem;
+    }
+    
+    .hero-stats {
+        gap: 1rem;
+    }
+    
+    .stat-item h3 {
+        font-size: 1.5rem;
+    }
+    
+    .navbar {
+        padding: 0.75rem 0.875rem;
+    }
+    
+    .container {
+        padding: 0 0.75rem;
+    }
+}
+
+/* Mobile menu overlay */
+@media (max-width: 768px) {
+    body.menu-open {
+        overflow: hidden;
+    }
+    
+    .nav-links::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        z-index: -1;
+    }
+    
+    .nav-links.active::before {
+        opacity: 1;
+        pointer-events: all;
+    }
+}
+
+/* Landscape orientation adjustments */
+@media (max-height: 600px) and (orientation: landscape) {
+    .hero {
+        min-height: auto;
+        padding: 5rem 1.5rem 2rem;
+    }
+    
+    .hero-stats {
+        flex-direction: row;
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+    
+    .stat-item h3 {
+        font-size: 1.5rem;
+    }
+    
+    section {
+        padding: 3rem 5%;
     }
 }
 
@@ -2277,3 +2703,4 @@ footer {
 .text-muted { color: var(--text-muted); }
 .bg-dark { background: var(--bg-dark); }
 .bg-card { background: var(--bg-card); }
+
