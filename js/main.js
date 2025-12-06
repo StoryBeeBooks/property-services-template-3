@@ -69,7 +69,7 @@ function applyTranslations() {
             if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
                 el.placeholder = translations[currentLang][key];
             } else {
-                el.textContent = translations[currentLang][key];
+                el.innerHTML = translations[currentLang][key];
             }
         }
     });
